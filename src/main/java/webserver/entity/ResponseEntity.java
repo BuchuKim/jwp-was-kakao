@@ -26,7 +26,7 @@ public class ResponseEntity {
     public static ResponseEntity of(final String path, final byte[] body) {
         return new ResponseEntity(StatusCode.OK,
             Map.of("Content-Type", FileExtension.convertToContentType(path) + ";charset=utf-8",
-                "Content-Length: ", String.valueOf(body.length)),
+                "Content-Length", String.valueOf(body.length)),
             body);
     }
     
