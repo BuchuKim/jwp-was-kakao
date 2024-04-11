@@ -1,6 +1,5 @@
 package webserver;
 
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +19,7 @@ public enum FileExtension {
     DEFAULT("none", "text/plain");
     
     private static final Pattern EXTENSION_MATCHER = Pattern.compile("\\.([^./\\s]+)$");
-    
+
     private final String extension;
     private final String contentType;
     
@@ -30,19 +29,23 @@ public enum FileExtension {
     }
     
     public static String convertToContentType(String filePath) {
-        String extension = extension(filePath);
-        return Arrays.stream(FileExtension.values())
-            .filter(fileExtension -> fileExtension.extension.equals(extension))
-            .findFirst()
-            .orElse(DEFAULT)
-            .contentType;
+        String extension = extractExtension(filePath);
+        try {
+            return FileExtension.valueOf(extension.toUpperCase()).getContentType();
+        } catch (IllegalArgumentException e) {
+            return DEFAULT.getContentType();
+        }
     }
     
-    private static String extension(String filePath) {
+    private static String extractExtension(String filePath) {
         Matcher matcher = EXTENSION_MATCHER.matcher(filePath);
         if (matcher.find()) {
             return matcher.group(1);
         }
         return DEFAULT.extension;
+    }
+
+    public String getContentType() {
+        return contentType;
     }
 }
