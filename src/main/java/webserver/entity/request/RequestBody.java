@@ -3,7 +3,7 @@ package webserver.entity.request;
 import java.util.Collections;
 import java.util.Map;
 
-import utils.FormDataParser;
+import webserver.utils.FormDataParser;
 
 public class RequestBody {
     private final Map<String, String> requestBody;

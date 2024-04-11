@@ -11,9 +11,9 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.RequestParser;
 import webserver.entity.request.RequestEntity;
 import webserver.entity.response.ResponseEntity;
+import webserver.utils.RequestParser;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
