@@ -7,3 +7,16 @@
 
 ## 온라인 코드 리뷰 과정
 * [텍스트와 이미지로 살펴보는 온라인 코드 리뷰 과정](https://github.com/next-step/nextstep-docs/tree/master/codereview)
+
+## 기능 목록
+- [x] `/index.html` 파일을 서빙한다.
+  - [x] 요청 헤더를 파싱한다.
+  - [x] path가 `index.html`일 경우 해당 파일을 응답한다.
+  - [x] 존재하지 않는 path 요청이나 null 값은 404로 응답한다.
+- [x] CSS 파일을 지원한다.
+- [x] `GET /user/create` 경로로 온 query string을 지원한다.
+  - [x] key=value 형태로 전달된 query string을 `User` 객체로 매핑한다.
+- [x] `POST /user/create` 경로로 온 회원가입 기능을 구현한다.
+- [x] 리다이렉트 기능을 지원한다.
+  - [x] 회원가입 완료 후 `/index.html`로 이동한다.
+  - [x] 302 HTTP Status Code를 사용한다.
