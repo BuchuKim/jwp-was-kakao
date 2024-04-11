@@ -1,4 +1,4 @@
-package webserver.entity;
+package webserver.entity.request;
 
 public class RequestEntity {
     private final RequestHeader requestHeader;

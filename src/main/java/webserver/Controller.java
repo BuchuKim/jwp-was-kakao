@@ -3,8 +3,8 @@ package webserver;
 import service.FileService;
 import service.UserService;
 import webserver.entity.HttpMethod;
-import webserver.entity.RequestEntity;
-import webserver.entity.ResponseEntity;
+import webserver.entity.request.RequestEntity;
+import webserver.entity.response.ResponseEntity;
 
 public class Controller {
     private static final String USER_CREATE_PATH = "/user/create";

@@ -7,6 +7,8 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import webserver.entity.request.RequestHeader;
+
 @SuppressWarnings("NonAsciiCharacters")
 class RequestHeaderTest {
     @Test

@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import utils.RequestParser;
-import webserver.entity.RequestEntity;
-import webserver.entity.ResponseEntity;
+import webserver.entity.request.RequestEntity;
+import webserver.entity.response.ResponseEntity;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
@@ -42,7 +42,7 @@ public class RequestHandler implements Runnable {
         InputStreamReader ir = new InputStreamReader(in);
         BufferedReader br = new BufferedReader(ir);
         DataOutputStream dos = new DataOutputStream(out);
-        
+
         try (ir; br; dos) {
             ResponseEntity responseData = service(br);
             dos.writeBytes(responseData.toResponseMessage());

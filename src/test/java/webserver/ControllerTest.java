@@ -10,8 +10,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import service.FileService;
 import service.UserService;
 import webserver.entity.HttpMethod;
-import webserver.entity.RequestEntity;
-import webserver.entity.RequestHeader;
+import webserver.entity.request.RequestEntity;
+import webserver.entity.request.RequestHeader;
+import webserver.entity.request.RequestLine;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class ControllerTest {
@@ -21,8 +22,9 @@ public class ControllerTest {
     void path에_맞는_파일을_응답한다(final String path) {
         // given
         final Controller controller = new Controller(new UserService(), new FileService());
+        final RequestLine requestLine = RequestLine.fromRequestLineString("GET " + path + " HTTP/1.1");
         final RequestEntity request = new RequestEntity(
-            new RequestHeader(HttpMethod.GET, path, new HashMap<>(), new HashMap<>()), null);
+            new RequestHeader(requestLine, new HashMap<>(), new HashMap<>()), null);
         
         // when & then
         Assertions.assertDoesNotThrow(() -> controller.service(request));
@@ -32,8 +34,9 @@ public class ControllerTest {
     void 파일이_없을때_예외가_발생한다() {
         // given
         final Controller controller = new Controller(new UserService(), new FileService());
+        final RequestLine requestLine = RequestLine.fromRequestLineString("GET /index2.html HTTP/1.1");
         final RequestEntity request = new RequestEntity(
-            new RequestHeader(HttpMethod.GET, "/index2.html", new HashMap<>(), new HashMap<>()), null);
+            new RequestHeader(requestLine, new HashMap<>(), new HashMap<>()), null);
         
         // when & then
         Assertions.assertThrows(IllegalArgumentException.class, () -> controller.service(request));

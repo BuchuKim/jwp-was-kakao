@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import webserver.entity.HttpMethod;
-import webserver.entity.RequestEntity;
+import webserver.entity.request.RequestEntity;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class RequestParserTest {
