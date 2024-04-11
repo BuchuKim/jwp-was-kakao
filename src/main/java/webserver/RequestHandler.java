@@ -19,7 +19,7 @@ public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
     private final Controller controller;
     
-    private Socket connection;
+    private final Socket connection;
     
     public RequestHandler(Socket connectionSocket, Controller controller) {
         this.connection = connectionSocket;
@@ -43,9 +43,11 @@ public class RequestHandler implements Runnable {
         BufferedReader br = new BufferedReader(ir);
         DataOutputStream dos = new DataOutputStream(out);
         
-        ResponseEntity responseData = service(br);
-        dos.writeBytes(responseData.toResponseMessage());
-        dos.flush();
+        try (ir; br; dos) {
+            ResponseEntity responseData = service(br);
+            dos.writeBytes(responseData.toResponseMessage());
+            dos.flush();
+        }
     }
     
     private ResponseEntity service(BufferedReader br) {
