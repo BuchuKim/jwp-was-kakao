@@ -1,4 +1,4 @@
-package utils;
+package webserver.entity;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
-import webserver.utils.FormDataParser;
+import webserver.entity.request.FormDataParser;
 
 @SuppressWarnings("NonAsciiCharacters")
 class FormDataParserTest {

@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import webserver.entity.HttpMethod;
-import webserver.utils.FormDataParser;
 
 public class RequestHeader {
     private static final String EMPTY_SPACE = " ";

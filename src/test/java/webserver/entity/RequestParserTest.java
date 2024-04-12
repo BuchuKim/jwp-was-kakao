@@ -1,4 +1,4 @@
-package utils;
+package webserver.entity;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import webserver.entity.HttpMethod;
 import webserver.entity.request.RequestEntity;
-import webserver.utils.RequestParser;
+import webserver.entity.request.RequestParser;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class RequestParserTest {

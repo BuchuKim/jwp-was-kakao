@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import webserver.entity.request.RequestEntity;
 import webserver.entity.response.ResponseEntity;
-import webserver.utils.RequestParser;
+import webserver.entity.request.RequestParser;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);

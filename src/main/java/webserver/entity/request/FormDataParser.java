@@ -1,4 +1,4 @@
-package webserver.utils;
+package webserver.entity.request;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
