@@ -1,11 +1,13 @@
 package webserver.entity.request;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import webserver.entity.HttpCookie;
 import webserver.entity.HttpMethod;
 
 public class RequestHeader {
@@ -37,6 +39,13 @@ public class RequestHeader {
             headers.put(header[0], header[1]);
         });
         return new RequestHeader(line, headers, FormDataParser.parse(queryString));
+    }
+
+    public Optional<HttpCookie> getCookie(String cookieKey) {
+        return HttpCookie.fromCookieString(headers.get("Cookie"))
+            .stream()
+            .filter(cookie -> cookie.getKey().equals(cookieKey))
+            .findFirst();
     }
     
     public Optional<String> getHeaderField(final String headerKey) {
