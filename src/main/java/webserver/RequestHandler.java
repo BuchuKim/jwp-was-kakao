@@ -11,19 +11,21 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import webserver.controller.Controller;
+import webserver.controller.ControllerMapper;
 import webserver.entity.request.RequestEntity;
-import webserver.entity.response.ResponseEntity;
 import webserver.entity.request.RequestParser;
+import webserver.entity.response.ResponseEntity;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
-    private final Controller controller;
+    private final ControllerMapper controllerMapper;
     
     private final Socket connection;
     
-    public RequestHandler(Socket connectionSocket, Controller controller) {
+    public RequestHandler(Socket connectionSocket, ControllerMapper controllerMapper) {
         this.connection = connectionSocket;
-        this.controller = controller;
+        this.controllerMapper = controllerMapper;
     }
     
     @Override
@@ -53,6 +55,7 @@ public class RequestHandler implements Runnable {
     private ResponseEntity service(BufferedReader br) {
         try {
             RequestEntity request = RequestParser.parse(br);
+            Controller controller = controllerMapper.getControllerByRequestPath(request.getHeader().getPath());
             return controller.service(request);
         } catch (IllegalArgumentException e) {
             logger.error("IllegalArgumentException : {}", e.getMessage());

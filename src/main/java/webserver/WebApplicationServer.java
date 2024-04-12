@@ -2,12 +2,17 @@ package webserver;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import service.FileService;
 import service.UserService;
+import webserver.controller.ControllerMapper;
+import webserver.controller.FileController;
+import webserver.controller.UserController;
 
 public class WebApplicationServer {
     private static final Logger logger = LoggerFactory.getLogger(WebApplicationServer.class);
@@ -18,10 +23,10 @@ public class WebApplicationServer {
         if (args != null && args.length > 0) {
             port = Integer.parseInt(args[0]);
         }
-        
-        final UserService userService = new UserService();
-        final FileService fileService = new FileService();
-        final Controller controller = new Controller(userService, fileService);
+
+        final UserController userController = new UserController(new UserService());
+        final FileController fileController = new FileController(new FileService());
+        final ControllerMapper controllerMapper = new ControllerMapper(List.of(userController, fileController));
         
         // 서버소켓을 생성한다. 웹서버는 기본적으로 8080번 포트를 사용한다.
         try (ServerSocket listenSocket = new ServerSocket(port)) {
@@ -30,7 +35,7 @@ public class WebApplicationServer {
             // 클라이언트가 연결될때까지 대기한다.
             Socket connection;
             while ((connection = listenSocket.accept()) != null) {
-                Thread thread = new Thread(new RequestHandler(connection, controller));
+                Thread thread = new Thread(new RequestHandler(connection, controllerMapper));
                 thread.start();
             }
         }

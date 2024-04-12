@@ -1,5 +1,7 @@
 package webserver.entity.request;
 
+import webserver.entity.HttpMethod;
+
 public class RequestEntity {
     private final RequestHeader requestHeader;
     private final RequestBody requestBody;
@@ -15,5 +17,9 @@ public class RequestEntity {
     
     public RequestBody getBody() {
         return requestBody;
+    }
+
+    public HttpMethod getMethod() {
+        return requestHeader.getMethod();
     }
 }
