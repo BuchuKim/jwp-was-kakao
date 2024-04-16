@@ -20,3 +20,16 @@
 - [x] 리다이렉트 기능을 지원한다.
   - [x] 회원가입 완료 후 `/index.html`로 이동한다.
   - [x] 302 HTTP Status Code를 사용한다.
+
+## 로그인 기능 목록
+- [x] 회원가입한 사용자로 `/user/login.html`에서 로그인할 수 있어야한다.
+  - [x] 로그인 성공 시 `index.html`로 리다이렉트한다.
+  - [x] 로그인 실패 시 `/user/login_failed.html`로 리다이렉트한다.
+- [x] 쿠키에 `JSESSIONID`가 없을 시 응답의 `Set-Cookie`에 `JSESSIONID`를 추가한다.
+  - [x] Path 설정 값은 `"\"`를 사용한다.
+
+## 사용자 목록 기능
+- [x] 로그인하지 않은 사용자가 `/user/list`에 접근할 경우 로그인 페이지로 이동한다.
+- [x] 로그인한 사용자가 `/user/list`에 접근할 경우 사용자 목록을 보여준다.
+  -  [x] 사용자 전체를 조회 가능하다.
+- [x] 동적으로 html을 생성하기 위해 handlebars.java template engine을 활용한다.
