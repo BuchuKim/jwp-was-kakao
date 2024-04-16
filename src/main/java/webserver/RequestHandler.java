@@ -11,8 +11,8 @@ import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import webserver.controller.Controller;
-import webserver.controller.ControllerMapper;
+import controller.Controller;
+import controller.ControllerMapper;
 import webserver.entity.request.RequestEntity;
 import webserver.entity.request.RequestParser;
 import webserver.entity.response.ResponseEntity;
