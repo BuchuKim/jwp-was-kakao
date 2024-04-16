@@ -1,4 +1,4 @@
-package webserver.controller;
+package controller;
 
 import java.util.HashMap;
 
@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import controller.FileController;
 import service.FileService;
 import webserver.entity.request.RequestEntity;
 import webserver.entity.request.RequestHeader;

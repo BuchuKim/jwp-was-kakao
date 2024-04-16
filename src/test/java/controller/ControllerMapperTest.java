@@ -1,4 +1,4 @@
-package webserver.controller;
+package controller;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
@@ -15,9 +15,9 @@ public class ControllerMapperTest {
 
     @BeforeEach
     void setUp() {
-        UserController userController = new UserController(new UserService());
+        UserCreateController userCreateController = new UserCreateController(new UserService());
         FileController fileController = new FileController(new FileService());
-        this.controllerMapper = new ControllerMapper(List.of(userController, fileController));
+        this.controllerMapper = new ControllerMapper(List.of(userCreateController, fileController));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class ControllerMapperTest {
         final Controller controller = controllerMapper.getControllerByRequestPath(userPath);
 
         // then
-        assertThat(controller).isInstanceOf(UserController.class);
+        assertThat(controller).isInstanceOf(UserCreateController.class);
     }
 
     @Test

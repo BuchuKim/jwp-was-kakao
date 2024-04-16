@@ -1,6 +1,9 @@
 package service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import db.DataBase;
 import model.User;
@@ -18,7 +21,11 @@ public class UserService {
         DataBase.addUser(user);
     }
     
-    public User getUser(final String testId) {
-        return DataBase.findUserById(testId);
+    public Optional<User> getUser(final String testId) {
+        return Optional.ofNullable(DataBase.findUserById(testId));
+    }
+
+    public List<User> findAll() {
+        return new ArrayList<>(DataBase.findAll());
     }
 }

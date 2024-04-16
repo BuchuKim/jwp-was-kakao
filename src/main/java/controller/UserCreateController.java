@@ -1,19 +1,17 @@
-package webserver.controller;
+package controller;
 
 import java.util.List;
-import java.util.Map;
 
 import service.UserService;
-import webserver.entity.HttpCookie;
 import webserver.entity.HttpMethod;
 import webserver.entity.request.RequestEntity;
 import webserver.entity.response.ResponseEntity;
 
-public class UserController implements Controller {
+public class UserCreateController implements Controller {
     private static final List<String> TARGET_PATHS = List.of("/user/create");
     private final UserService userService;
     
-    public UserController(final UserService userService) {
+    public UserCreateController(final UserService userService) {
         this.userService = userService;
     }
 
