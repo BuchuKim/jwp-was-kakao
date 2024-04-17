@@ -11,6 +11,7 @@ import webserver.entity.HttpCookie;
 import webserver.entity.HttpMethod;
 
 public class RequestHeader {
+    private static final String COOKIE_KEY = "Cookie";
     private static final String EMPTY_SPACE = " ";
     private static final String QUERY_DELIMETER = "\\?";
     private static final String HEADER_COLON = ": ";
@@ -41,11 +42,8 @@ public class RequestHeader {
         return new RequestHeader(line, headers, FormDataParser.parse(queryString));
     }
 
-    public Optional<HttpCookie> getCookie(String cookieKey) {
-        return HttpCookie.fromCookieString(headers.get("Cookie"))
-            .stream()
-            .filter(cookie -> cookie.getKey().equals(cookieKey))
-            .findFirst();
+    public HttpCookie getCookie() {
+        return HttpCookie.fromCookieString(headers.get(COOKIE_KEY));
     }
     
     public Optional<String> getHeaderField(final String headerKey) {

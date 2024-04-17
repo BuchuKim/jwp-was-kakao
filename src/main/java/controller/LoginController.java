@@ -40,6 +40,7 @@ public class LoginController implements Controller {
 
     private ResponseEntity doGet(final RequestEntity request) {
         if (isLogIn(request)) {
+            // 이미 로그인 되어있는 경우 -> 리다이렉트
             return ResponseEntity.redirectResponseEntity("/index.html");
         }
         return fileService.serveFile(request.getHeader());
@@ -48,8 +49,10 @@ public class LoginController implements Controller {
     private ResponseEntity doPost(final RequestEntity request) {
         try {
             final User user = logInUser(request.getBody().get());
-            HttpCookie loginCookie = setLoginUserCookie(user);
             ResponseEntity response = ResponseEntity.redirectResponseEntity("/index.html");
+
+            HttpCookie loginCookie = setLoginUserCookie(user);
+            loginCookie.addPath("/");
             response.addCookie(loginCookie);
             return response;
         } catch (IllegalArgumentException e) {
@@ -58,10 +61,11 @@ public class LoginController implements Controller {
     }
 
     private boolean isLogIn(final RequestEntity request) {
-        return request.getHeader().getCookie(HttpCookie.JSESSIONID_KEY)
-            .map(HttpCookie::getValue).map(sessionManager::getSessionBySessionId)
+        return request.getHeader().getCookie().getSessionIdValue()
+            .map(sessionManager::getSessionBySessionId)
             .map(session -> session.getAttribute("user"))
-            .map(Optional::isPresent).orElse(false);
+            .map(Optional::isPresent)
+            .orElse(false);
     }
 
     private User logInUser(final Map<String, String> userData) {
@@ -75,8 +79,9 @@ public class LoginController implements Controller {
 
     private HttpCookie setLoginUserCookie(User loginUser) {
         HttpCookie sessionIdCookie = HttpCookie.generateSessionIdCookie();
-        sessionManager.createSession(sessionIdCookie.getValue());
-        sessionManager.getSessionBySessionId(sessionIdCookie.getValue()).setAttribute("user", loginUser);
+        String generatedSessionId = sessionIdCookie.getSessionIdValue().orElseThrow();
+        sessionManager.createSession(generatedSessionId);
+        sessionManager.getSessionBySessionId(generatedSessionId).setAttribute("user", loginUser);
         return sessionIdCookie;
     }
 

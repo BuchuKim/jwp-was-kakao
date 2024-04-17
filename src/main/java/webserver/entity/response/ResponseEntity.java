@@ -1,9 +1,6 @@
 package webserver.entity.response;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import webserver.FileExtension;
@@ -13,20 +10,20 @@ import webserver.entity.StatusCode;
 public class ResponseEntity {
     private final StatusCode statusCode;
     private final Map<String, String> headers;
-    private final List<HttpCookie> cookies;
+    private HttpCookie cookie;
     private final byte[] body;
 
     private ResponseEntity(final StatusCode statusCode, final Map<String, String> headers, final byte[] body) {
         this.statusCode = statusCode;
         this.headers = headers;
-        this.cookies = new ArrayList<>();
+        this.cookie = new HttpCookie();
         this.body = body;
     }
     
     private ResponseEntity(final StatusCode statusCode, final Map<String, String> headers) {
         this.statusCode = statusCode;
         this.headers = headers;
-        this.cookies = new ArrayList<>();
+        this.cookie = new HttpCookie();
         this.body = new byte[0];
     }
 
@@ -59,7 +56,7 @@ public class ResponseEntity {
     }
 
     public void addCookie(final HttpCookie cookie) {
-        cookies.add(cookie);
+        this.cookie = cookie;
     }
     
     public String toResponseMessage() {
@@ -67,7 +64,7 @@ public class ResponseEntity {
         stringBuilder.append("HTTP/1.1 ");
         stringBuilder.append(statusCode.generateResponseLine());
         headers.forEach((key, value) -> stringBuilder.append(key).append(": ").append(value).append("\r\n"));
-        cookies.forEach(cookie -> stringBuilder.append(cookie.toSetCookieHeaderString()).append("\r\n"));
+        stringBuilder.append(cookie.toSetCookieHeaderString());
         stringBuilder.append("\r\n");
         stringBuilder.append(new String(body, StandardCharsets.ISO_8859_1));
         return stringBuilder.toString();

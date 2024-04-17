@@ -34,9 +34,8 @@ public class UserController implements Controller {
     }
 
     private void checkLogIn(final RequestEntity request) {
-        final String sessionId = request.getHeader().getCookie("JSESSIONID")
-            .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."))
-            .getValue();
+        final String sessionId = request.getHeader().getCookie()
+            .getSessionIdValue().orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
         sessionManager.getSessionBySessionId(sessionId)
             .getAttribute("user").orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
     }

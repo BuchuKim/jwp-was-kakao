@@ -1,48 +1,52 @@
 package webserver.entity;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class HttpCookie {
     public static final String JSESSIONID_KEY = "JSESSIONID";
+    public static final String PATH_KEY = "Path";
     private static final String COOKIE_DELIMITER = "; ";
     private static final String COOKIE_KEY_VALUE_DELIMITER = "=";
-    private final String key;
-    private final String value;
+    private final Map<String, String> cookieData;
 
-    private HttpCookie(final String key, final String value) {
-        this.key = key;
-        this.value = value;
+    public HttpCookie() {
+        this.cookieData = new HashMap<>();
     }
 
     public static HttpCookie generateSessionIdCookie() {
-        return new HttpCookie("JSESSIONID", UUID.randomUUID().toString());
+        HttpCookie cookie = new HttpCookie();
+        cookie.cookieData.put(JSESSIONID_KEY, UUID.randomUUID().toString());
+        return cookie;
     }
 
-    public static List<HttpCookie> fromCookieString(String cookieString) {
-        return Arrays.stream(cookieString.split(COOKIE_DELIMITER))
-            .map(cookie -> {
+    public static HttpCookie fromCookieString(String cookieString) {
+        HttpCookie parsed = new HttpCookie();
+        Arrays.stream(cookieString.split(COOKIE_DELIMITER))
+            .forEach(cookie -> {
                 final String[] cookiePair = cookie.split(COOKIE_KEY_VALUE_DELIMITER);
-                return new HttpCookie(cookiePair[0], cookiePair[1]);
-            })
-            .collect(Collectors.toList());
+                parsed.cookieData.put(cookiePair[0], cookiePair[1]);
+            });
+        return parsed;
     }
 
     public String toSetCookieHeaderString() {
-        return "Set-Cookie: " + toCookieString() + "; Path=/";
+        StringBuilder builder = new StringBuilder();
+        builder.append("Set-Cookie: ");
+        cookieData.forEach((key, value) ->
+            builder.append(key).append(COOKIE_KEY_VALUE_DELIMITER).append(value).append("; "));
+        builder.append("\r\n");
+        return builder.toString();
     }
 
-    public String toCookieString() {
-        return key + COOKIE_KEY_VALUE_DELIMITER + value;
+    public void addPath(String path) {
+        cookieData.put(PATH_KEY, path);
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public String getValue() {
-        return value;
+    public Optional<String> getSessionIdValue() {
+        return Optional.ofNullable(cookieData.get(JSESSIONID_KEY));
     }
 }
