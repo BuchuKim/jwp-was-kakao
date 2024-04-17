@@ -3,18 +3,19 @@ package webserver;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import controller.LoginController;
-import controller.UserController;
-import service.FileService;
-import service.UserService;
 import controller.ControllerMapper;
 import controller.FileController;
+import controller.LoginController;
+import controller.LoginFormController;
+import controller.UserController;
 import controller.UserCreateController;
+import service.FileService;
+import service.UserService;
+import webserver.entity.HttpMethod;
 import webserver.entity.session.SessionManager;
 
 public class WebApplicationServer {
@@ -47,9 +48,18 @@ public class WebApplicationServer {
         FileService fileService = new FileService();
         SessionManager sessionManager = new SessionManager(new HashMap<>());
         final UserCreateController userCreateController = new UserCreateController(userService);
-        final LoginController loginController = new LoginController(userService, fileService, sessionManager);
+        final LoginController loginController = new LoginController(userService, sessionManager);
+        final LoginFormController loginFormController = new LoginFormController(fileService, sessionManager);
         final UserController userController = new UserController(userService, sessionManager);
         final FileController fileController = new FileController(fileService);
-        return new ControllerMapper(List.of(userCreateController, loginController, userController, fileController));
+
+        ControllerMapper controllerMapper = new ControllerMapper();
+        controllerMapper.addController(HttpMethod.GET, userCreateController);
+        controllerMapper.addController(HttpMethod.POST, userCreateController);
+        controllerMapper.addController(HttpMethod.GET, loginFormController);
+        controllerMapper.addController(HttpMethod.POST, loginController);
+        controllerMapper.addController(HttpMethod.GET, userController);
+        controllerMapper.addController(HttpMethod.GET, fileController);
+        return controllerMapper;
     }
 }

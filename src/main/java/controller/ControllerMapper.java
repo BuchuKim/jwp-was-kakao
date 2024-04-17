@@ -1,25 +1,26 @@
 package controller;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.EnumMap;
 import java.util.Map;
-import java.util.Optional;
+
+import webserver.entity.HttpMethod;
+import webserver.entity.request.RequestEntity;
 
 public class ControllerMapper {
-    public static final String DEFAULT_PATH = "default";
-    private final Map<String, Controller> controllers;
+    private final Map<HttpMethod, PathMapper> mapping;
 
-    public ControllerMapper(List<Controller> controllers) {
-        this.controllers = new HashMap<>();
-        controllers.forEach(controller -> {
-            controller.getTargetPaths().forEach(path -> {
-                this.controllers.put(path, controller);
-            });
-        });
+    public ControllerMapper() {
+        mapping = new EnumMap<>(HttpMethod.class);
+        mapping.put(HttpMethod.GET, new PathMapper());
+        mapping.put(HttpMethod.POST, new PathMapper());
     }
 
-    public Controller getControllerByRequestPath(final String path) {
-        return Optional.ofNullable(controllers.get(path))
-            .orElse(controllers.get(DEFAULT_PATH));
+    public void addController(HttpMethod method, Controller controller) {
+        mapping.get(method).addController(controller);
+    }
+
+    public Controller findControllerByRequest(final RequestEntity request) {
+        return mapping.get(request.getMethod())
+            .findControllerByPath(request.getHeader().getPath());
     }
 }

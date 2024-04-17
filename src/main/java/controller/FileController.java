@@ -7,7 +7,7 @@ import webserver.entity.request.RequestEntity;
 import webserver.entity.response.ResponseEntity;
 
 public class FileController implements Controller {
-    private static final List<String> TARGET_PATHS = List.of(ControllerMapper.DEFAULT_PATH);
+    private static final List<String> TARGET_PATHS = List.of(PathMapper.DEFAULT_PATH);
     private final FileService fileService;
 
     public FileController(final FileService fileService) {
