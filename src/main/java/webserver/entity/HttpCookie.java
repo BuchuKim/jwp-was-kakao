@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class HttpCookie {
+    public static final String JSESSIONID_KEY = "JSESSIONID";
     private static final String COOKIE_DELIMITER = "; ";
     private static final String COOKIE_KEY_VALUE_DELIMITER = "=";
     private final String key;

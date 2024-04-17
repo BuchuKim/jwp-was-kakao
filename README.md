@@ -25,6 +25,7 @@
 - [x] 회원가입한 사용자로 `/user/login.html`에서 로그인할 수 있어야한다.
   - [x] 로그인 성공 시 `index.html`로 리다이렉트한다.
   - [x] 로그인 실패 시 `/user/login_failed.html`로 리다이렉트한다.
+- [x] 로그인한 유저가 `/user/login.html`에 GET 메소드로 접근했을 경우 `/index.html`로 리다이렉트한다.
 - [x] 쿠키에 `JSESSIONID`가 없을 시 응답의 `Set-Cookie`에 `JSESSIONID`를 추가한다.
   - [x] Path 설정 값은 `"\"`를 사용한다.
 

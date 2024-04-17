@@ -16,11 +16,7 @@ public class FileController implements Controller {
 
     @Override
     public ResponseEntity service(RequestEntity request) {
-        try {
-            return fileService.serveFile(request.getHeader());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("파일이 존재하지 않습니다.");
-        }
+        return fileService.serveFile(request.getHeader());
     }
 
     @Override

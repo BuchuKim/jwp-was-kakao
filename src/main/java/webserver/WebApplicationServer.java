@@ -47,7 +47,7 @@ public class WebApplicationServer {
         FileService fileService = new FileService();
         SessionManager sessionManager = new SessionManager(new HashMap<>());
         final UserCreateController userCreateController = new UserCreateController(userService);
-        final LoginController loginController = new LoginController(userService, sessionManager);
+        final LoginController loginController = new LoginController(userService, fileService, sessionManager);
         final UserController userController = new UserController(userService, sessionManager);
         final FileController fileController = new FileController(fileService);
         return new ControllerMapper(List.of(userCreateController, loginController, userController, fileController));

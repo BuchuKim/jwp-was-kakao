@@ -2,8 +2,10 @@ package controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import model.User;
+import service.FileService;
 import service.UserService;
 import webserver.entity.HttpCookie;
 import webserver.entity.HttpMethod;
@@ -12,21 +14,35 @@ import webserver.entity.response.ResponseEntity;
 import webserver.entity.session.SessionManager;
 
 public class LoginController implements Controller {
-    private static final List<String> TARGET_PATHS = List.of("/user/login");
+    private static final List<String> TARGET_PATHS = List.of("/user/login", "/user/login.html");
     private final UserService userService;
+    private final FileService fileService;
     private final SessionManager sessionManager;
 
-    public LoginController(final UserService userService, final SessionManager sessionManager) {
+    public LoginController(final UserService userService,
+        final FileService fileService,
+        final SessionManager sessionManager) {
         this.userService = userService;
+        this.fileService = fileService;
         this.sessionManager = sessionManager;
     }
 
     @Override
     public ResponseEntity service(RequestEntity request) {
+        if (request.getMethod().equals(HttpMethod.GET)) {
+            return doGet(request);
+        }
         if (request.getMethod().equals(HttpMethod.POST)) {
             return doPost(request);
         }
         throw new IllegalArgumentException("지원하지 않는 HTTP Method 입니다.");
+    }
+
+    private ResponseEntity doGet(final RequestEntity request) {
+        if (isLogIn(request)) {
+            return ResponseEntity.redirectResponseEntity("/index.html");
+        }
+        return fileService.serveFile(request.getHeader());
     }
 
     private ResponseEntity doPost(final RequestEntity request) {
@@ -39,6 +55,13 @@ public class LoginController implements Controller {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.redirectResponseEntity("/user/login_failed.html");
         }
+    }
+
+    private boolean isLogIn(final RequestEntity request) {
+        return request.getHeader().getCookie(HttpCookie.JSESSIONID_KEY)
+            .map(HttpCookie::getValue).map(sessionManager::getSessionBySessionId)
+            .map(session -> session.getAttribute("user"))
+            .map(Optional::isPresent).orElse(false);
     }
 
     private User logInUser(final Map<String, String> userData) {
