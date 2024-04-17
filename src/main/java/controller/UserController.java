@@ -11,7 +11,7 @@ import webserver.entity.session.SessionManager;
 import webserver.view.ViewResolver;
 
 public class UserController implements Controller {
-    private static final List<String> TARGET_PATHS = List.of("/user/list");
+    private static final List<String> TARGET_PATHS = List.of("/user/list", "/user/list.html");
     private final UserService userService;
     private final SessionManager sessionManager;
 
