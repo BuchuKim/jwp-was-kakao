@@ -24,6 +24,9 @@ public class HttpCookie {
     }
 
     public static HttpCookie fromCookieString(String cookieString) {
+        if (cookieString == null) {
+            return new HttpCookie();
+        }
         HttpCookie parsed = new HttpCookie();
         Arrays.stream(cookieString.split(COOKIE_DELIMITER))
             .forEach(cookie -> {
@@ -34,10 +37,18 @@ public class HttpCookie {
     }
 
     public String toSetCookieHeaderString() {
+        if (cookieData.isEmpty()) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         builder.append("Set-Cookie: ");
-        cookieData.forEach((key, value) ->
-            builder.append(key).append(COOKIE_KEY_VALUE_DELIMITER).append(value).append("; "));
+        builder.append(JSESSIONID_KEY).append(COOKIE_KEY_VALUE_DELIMITER).append(cookieData.get(JSESSIONID_KEY)).append("; ");
+        cookieData.forEach((key, value) -> {
+            if (!key.equals(JSESSIONID_KEY)) {
+                builder.append(key).append(COOKIE_KEY_VALUE_DELIMITER).append(value).append("; ");
+            }
+        });
+        builder.delete(builder.length() - 2, builder.length());
         builder.append("\r\n");
         return builder.toString();
     }

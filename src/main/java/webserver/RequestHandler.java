@@ -30,8 +30,8 @@ public class RequestHandler implements Runnable {
     
     @Override
     public void run() {
-        // logger.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
-        //     connection.getPort());
+        logger.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
+            connection.getPort());
         
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             handle(in, out);
